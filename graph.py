@@ -68,12 +68,29 @@ class Graph:
                     paths.append(p)
         return paths
 
-    def build_cycles(self):
+    def remove_doublicate_cycles(self, gain_list):
+        new_cycles = []
+        cases = [True for _ in range(0, len(self.cycles), 1)]
+        for i in range(0, len(self.cycles), 1):
+            if cases[i]:
+                for j in range(0, len(self.cycles), 1):
+                    cycle_1 = self.cycles[i][0:-1].copy()
+                    cycle_2 = self.cycles[j][0:-1].copy()
+                    if (i != j) and (cases[j]) and (sorted(cycle_1) == sorted(cycle_2)) and (
+                            sorted(get_gain_of(gain_list, cycle_1)) != sorted(get_gain_of(gain_list, cycle_2))):
+                        cases[j] = False
+        for i, case in enumerate(cases, 0):
+            if case:
+                new_cycles.append(self.cycles[i])
+        self.cycles = new_cycles
+
+    def build_cycles(self, gain_list):
         for node in self.graph_dic.keys():
             temp_cycles = self.get_cycles_for_node(node=node, goal=node)
             for temp_cycle in temp_cycles:
                 if temp_cycle not in self.cycles:
                     self.cycles.append(temp_cycle)
+        self.remove_doublicate_cycles(gain_list)
 
     def get_cycles_for_node(self, node, goal, path=None, temp_started=True):
         if path is None:
@@ -105,7 +122,7 @@ def run(string_links):
     edge = edges_transformations(string_links)
     temp_graph = Graph(edge)
     temp_graph.build_paths()
-    temp_graph.build_cycles()
+    temp_graph.build_cycles(gain_list)
     for i in temp_graph.paths:
         print(f"{get_gain_of(gain_list, i)} --> {i}")
     print("@@@@@@@@@@@@@@@")
@@ -143,20 +160,32 @@ def get_gain_of(gains_list, path=None):
 
 if __name__ == "__main__":
     # string_nodes = "x1,x2,x3,x4,x5,x6,x7,x8"
+    # input_string = "x1,x2,1\n" \
+    #                "x2,x3,A23\n" \
+    #                "x3,x4,A34\n" \
+    #                "x4,x5,A45\n" \
+    #                "x5,x6,A56\n" \
+    #                "x6,x7,A67\n" \
+    #                "x7,x8,1\n" \
+    #                "x7,x6,A76\n" \
+    #                "x6,x5,A65\n" \
+    #                "x5,x4,A54\n" \
+    #                "x4,x3,A43\n" \
+    #                "x3,x2,A32\n" \
+    #                "x2,x4,A24\n" \
+    #                "x7,x5,A75\n" \
+    #                "x7,x7,A77\n" \
+    #                "x2,x7,A27"
     input_string = "x1,x2,1\n" \
-                   "x2,x3,A23\n" \
-                   "x3,x4,A34\n" \
-                   "x4,x5,A45\n" \
-                   "x5,x6,A56\n" \
-                   "x6,x7,A67\n" \
-                   "x7,x8,1\n" \
-                   "x7,x6,A76\n" \
-                   "x6,x5,A65\n" \
-                   "x5,x4,A54\n" \
-                   "x4,x3,A43\n" \
-                   "x3,x2,A32\n" \
-                   "x2,x4,A24\n" \
-                   "x7,x5,A75\n" \
-                   "x7,x7,A77\n" \
-                   "x2,x7,A27"
+                   "x2,x3,G1G4\n" \
+                   "x3,x4,G2\n" \
+                   "x4,x5,1\n" \
+                   "x5,x6,1\n" \
+                   "x3,x2,H1\n" \
+                   "x3,x4,G3\n" \
+                   "x5,x2,-H2"
+    # input_string = "x1,x2,1\n" \
+    #                "x2,x3,G1G2\n" \
+    #                "x3,x4,G4\n" \
+    #                "x3,x4,"
     run(input_string)
