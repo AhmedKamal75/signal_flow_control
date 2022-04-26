@@ -138,19 +138,35 @@ def edges_transformations(string_directions, with_gain=False):
     else:
         result = []
 
-    for line in string_directions.split("\n"):
+    for i, line in enumerate(string_directions.split("\n"), 0):
         temp = line.split(",")
         if len(temp) == 3:
-            temp_edge = line.split(",")
+            temp_edges = line.split(",")
             if with_gain:
-                if result.keys().__contains__((temp_edge[0], temp_edge[1])):
+                if result.keys().__contains__((temp_edges[0], temp_edges[1])):
+                    new_edge = "T" + str(i)
+                    temp_gain_1 = temp_edges[2] + "`"
+                    temp_gain_2 = temp_edges[2] + "``"
+                    result[(temp_edges[0], new_edge)] = temp_gain_1
+                    result[(new_edge, temp_edges[1])] = temp_gain_2
                     print(f"\033[1;31;40m", end=" ")
-                    print(f"refused: {temp_edge[0]},{temp_edge[1]},{temp_edge[2]}")
+                    print(f"({temp_edges[0]}) -({temp_gain_1})-> ({new_edge}) -({temp_gain_2})-> ({temp_edges[1]})\t:"
+                          f"{temp_edges[2]} = {temp_gain_1} + {temp_gain_2}")
                     print(f"\033[1;37;40m", end=" ")
+
                 else:
-                    result[(temp_edge[0], temp_edge[1])] = temp_edge[2]
+                    result[(temp_edges[0], temp_edges[1])] = temp_edges[2]
             else:
-                result.append((temp_edge[0], temp_edge[1]))
+                if result.__contains__((temp_edges[0], temp_edges[1])):
+                    new_edge = "T" + str(i)
+                    result.append((temp_edges[0], new_edge))
+                    result.append((new_edge, temp_edges[1]))
+                    print(f"\033[1;31;40m", end=" ")
+                    print(f"({temp_edges[0]}) --> ({new_edge}) --> ({temp_edges[1]})")
+                    print(f"\033[1;37;40m", end=" ")
+
+                else:
+                    result.append((temp_edges[0], temp_edges[1]))
     return result
 
 
@@ -189,9 +205,5 @@ if __name__ == "__main__":
                    "x3,x2,H1\n" \
                    "x3,x4,G3\n" \
                    "x5,x2,-H2"
-    # input_string = "x1,x2,1\n" \
-    #                "x2,x3,G1G2\n" \
-    #                "x3,x4,G4\n" \
-    #                "x3,x4,"
     print(f"\033[1;37;40m", end=" ")
     run(input_string)
