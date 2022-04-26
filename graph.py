@@ -132,7 +132,6 @@ def run(string_links):
 
 
 def edges_transformations(string_directions, with_gain=False):
-    result = None
     if with_gain:
         result = {}
     else:
@@ -181,29 +180,29 @@ def get_gain_of(gains_list, path=None):
 
 if __name__ == "__main__":
     # string_nodes = "x1,x2,x3,x4,x5,x6,x7,x8"
-    # input_string = "x1,x2,1\n" \
-    #                "x2,x3,A23\n" \
-    #                "x3,x4,A34\n" \
-    #                "x4,x5,A45\n" \
-    #                "x5,x6,A56\n" \
-    #                "x6,x7,A67\n" \
-    #                "x7,x8,1\n" \
-    #                "x7,x6,A76\n" \
-    #                "x6,x5,A65\n" \
-    #                "x5,x4,A54\n" \
-    #                "x4,x3,A43\n" \
-    #                "x3,x2,A32\n" \
-    #                "x2,x4,A24\n" \
-    #                "x7,x5,A75\n" \
-    #                "x7,x7,A77\n" \
-    #                "x2,x7,A27"
     input_string = "x1,x2,1\n" \
-                   "x2,x3,G1G4\n" \
-                   "x3,x4,G2\n" \
-                   "x4,x5,1\n" \
-                   "x5,x6,1\n" \
-                   "x3,x2,H1\n" \
-                   "x3,x4,G3\n" \
-                   "x5,x2,-H2"
-    print(f"\033[1;37;40m", end=" ")
+                   "x2,x3,A23\n" \
+                   "x3,x4,A34\n" \
+                   "x4,x5,A45\n" \
+                   "x5,x6,A56\n" \
+                   "x6,x7,A67\n" \
+                   "x7,x8,1\n" \
+                   "x7,x6,A76\n" \
+                   "x6,x5,A65\n" \
+                   "x5,x4,A54\n" \
+                   "x4,x3,A43\n" \
+                   "x3,x2,A32\n" \
+                   "x2,x4,A24\n" \
+                   "x7,x5,A75\n" \
+                   "x7,x7,A77\n" \
+                   "x2,x7,A27"
+    # input_string = "x1,x2,1\n" \
+    #                "x2,x3,G1G4\n" \
+    #                "x3,x4,G2\n" \
+    #                "x4,x5,1\n" \
+    #                "x5,x6,1\n" \
+    #                "x3,x2,H1\n" \
+    #                "x3,x4,G3\n" \
+    #                "x5,x2,-H2"
+    # print(f"\033[1;37;40m", end=" ")
     run(input_string)
