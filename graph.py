@@ -143,7 +143,12 @@ def edges_transformations(string_directions, with_gain=False):
         if len(temp) == 3:
             temp_edge = line.split(",")
             if with_gain:
-                result[(temp_edge[0], temp_edge[1])] = temp_edge[2]
+                if result.keys().__contains__((temp_edge[0], temp_edge[1])):
+                    print(f"\033[1;31;40m", end=" ")
+                    print(f"refused: {temp_edge[0]},{temp_edge[1]},{temp_edge[2]}")
+                    print(f"\033[1;37;40m", end=" ")
+                else:
+                    result[(temp_edge[0], temp_edge[1])] = temp_edge[2]
             else:
                 result.append((temp_edge[0], temp_edge[1]))
     return result
@@ -188,4 +193,5 @@ if __name__ == "__main__":
     #                "x2,x3,G1G2\n" \
     #                "x3,x4,G4\n" \
     #                "x3,x4,"
+    print(f"\033[1;37;40m", end=" ")
     run(input_string)
